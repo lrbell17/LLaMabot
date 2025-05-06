@@ -3,6 +3,8 @@ package com.lrbell.llamabot.service;
 import com.lrbell.llamabot.errors.exception.ChatSessionNotFoundException;
 import com.lrbell.llamabot.model.ChatSession;
 import com.lrbell.llamabot.repository.ChatSessionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,11 @@ import java.time.Instant;
 
 @Service
 public class ChatSessionService {
+
+    /**
+     * Logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ChatSessionService.class);
 
     /**
      * The JPA repository for persistence.
@@ -45,7 +52,11 @@ public class ChatSessionService {
     public void updateChatSessionTimestamp(final String sessionId) {
         final int rowsUpdated = chatSessionRepository.updateUpdatedAtById(sessionId, Instant.now());
         if (rowsUpdated == 0) {
-            throw new ChatSessionNotFoundException("Chat session with ID " + sessionId + " not found.");
+            final ChatSessionNotFoundException ex = new ChatSessionNotFoundException(
+                    String.format("Chat session with ID %s not found", sessionId)
+            );
+            logger.warn(String.valueOf(ex));
+            throw ex;
         }
     }
 }
