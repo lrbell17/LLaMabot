@@ -1,3 +1,13 @@
 type Query {
   chat(message: String!): String
 }
+
+type Mutation {
+  startChatSession(userId: String!): ChatSession!
+}
+
+type ChatSession {
+  sessionId: ID!
+  userId: String!
+  startedAt: String
+}
