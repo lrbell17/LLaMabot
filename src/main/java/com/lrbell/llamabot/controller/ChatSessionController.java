@@ -35,4 +35,15 @@ public class ChatSessionController {
     public ChatSession startChatSession(@Argument final String userId) {
         return chatSessionService.startChatSession(userId);
     }
+
+    /**
+     * Mutation for incrementing the updatedAt time of a chat session.
+     *
+     * @param sessionId
+     */
+    @MutationMapping
+    public Boolean updateChatSessionTimestamp(@Argument final String sessionId) {
+        chatSessionService.updateChatSessionTimestamp(sessionId);
+        return true;
+    }
 }
