@@ -19,5 +19,14 @@ public class UserDto {
 
     }
 
+    public record LoginRequest(
+            @NotBlank(message = "username is required") String username,
+            @NotBlank(message = "password is required") String password
+    ) {}
+
+    public record LoginResponse(
+            String token,
+            String tokenType
+    ) {}
 
 }
