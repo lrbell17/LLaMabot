@@ -3,6 +3,7 @@ package com.lrbell.llamabot.controller;
 import com.lrbell.llamabot.dto.UserDto;
 import com.lrbell.llamabot.model.User;
 import com.lrbell.llamabot.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity<UserDto.RegisterResponse> register(@RequestBody final UserDto.RegisterRequest request) {
+    public ResponseEntity<UserDto.RegisterResponse> register(@Valid @RequestBody final UserDto.RegisterRequest request) {
         final User user = userService.register(request);
         final UserDto.RegisterResponse response = new UserDto.RegisterResponse(user.getUserId(), user.getUsername(), user.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

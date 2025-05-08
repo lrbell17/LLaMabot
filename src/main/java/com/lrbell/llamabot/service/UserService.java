@@ -51,9 +51,9 @@ public class UserService {
 
         // Check if username/email exists
         userRepository.findByUsername(request.username())
-                .ifPresent(u -> { throw new IllegalArgumentException(String.format("Username %s already in use", u)); });
+                .ifPresent(u -> { throw new IllegalArgumentException(String.format("username %s already in use", u.getUsername())); });
         userRepository.findByEmail(request.email())
-                .ifPresent(u -> { throw new IllegalArgumentException(String.format("Email %s already in use", u)); });
+                .ifPresent(u -> { throw new IllegalArgumentException(String.format("email %s already in use", u.getEmail())); });
 
         // Encode password and save
         final String encodedPassword = passwordEncoder.encode(request.password());
