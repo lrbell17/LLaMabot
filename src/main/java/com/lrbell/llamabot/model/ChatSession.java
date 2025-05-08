@@ -1,5 +1,6 @@
 package com.lrbell.llamabot.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -21,17 +22,20 @@ public class ChatSession {
     /**
      * The user the session belongs to.
      */
+    @Column(nullable = false)
     private String userId;
 
     /**
      * The session start time.
      */
+    @Column(nullable = false)
     private Instant startedAt;
 
     /**
      * Session update time.
      */
     @Setter
+    @Column(nullable = false)
     private Instant updatedAt;
 
     /**
