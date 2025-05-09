@@ -1,6 +1,9 @@
 spring:
   application:
     name: llamabot
+  web:
+    resources:
+      add-mappings: false
   ai:
     ollama:
       base-url: http://localhost:11434

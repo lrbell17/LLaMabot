@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -58,6 +60,18 @@ public class RestErrorHandler {
     public ResponseEntity<Map<String, String>> handleBadCredentials(final BadCredentialsException ex) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    /**
+     * Handle {@link NoResourceFoundException} and {@link NoHandlerFoundException} as not found.
+     * @param ex
+     * @return 404 response with error message.
+     */
+    @ExceptionHandler( {NoResourceFoundException.class, NoHandlerFoundException.class })
+    public ResponseEntity<Map<String,String>> handleNotFound(final Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
 
