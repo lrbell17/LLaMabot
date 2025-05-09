@@ -10,8 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    /**
+     * User repository for querying the database.
+     */
     final UserRepository userRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param userRepository
+     */
     public UserDetailsServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }

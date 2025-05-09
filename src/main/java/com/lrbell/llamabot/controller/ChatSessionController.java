@@ -5,6 +5,7 @@ import com.lrbell.llamabot.service.ChatSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -32,18 +33,9 @@ public class ChatSessionController {
      * @return the session.
      */
     @MutationMapping
+    @PreAuthorize("#userId == authentication.name")
     public ChatSession startChatSession(@Argument final String userId) {
         return chatSessionService.startChatSession(userId);
     }
 
-    /**
-     * Mutation for incrementing the updatedAt time of a chat session.
-     *
-     * @param sessionId
-     */
-    @MutationMapping
-    public Boolean updateChatSessionTimestamp(@Argument final String sessionId) {
-        chatSessionService.updateChatSessionTimestamp(sessionId);
-        return true;
-    }
 }
