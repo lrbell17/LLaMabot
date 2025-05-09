@@ -1,5 +1,6 @@
 package com.lrbell.llamabot.service.security;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -56,6 +57,39 @@ public class JwtTokenProvider {
                 .setExpiration(expiry)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    /**
+     * Get the username from the JWT subject.
+     *
+     * @param token
+     * @return The username.
+     */
+    public String getUsernameFromToken(final String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    /**
+     * Validate the JWT token.
+     *
+     * @param token
+     * @return true if token is valid, otherwise false
+     */
+    public boolean validateToken(final String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
 }

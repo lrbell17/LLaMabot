@@ -1,6 +1,6 @@
 package com.lrbell.llamabot.configuration;
 
-import com.lrbell.llamabot.service.UserService;
+import com.lrbell.llamabot.service.security.JwtTokenFilter;
 import com.lrbell.llamabot.service.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -62,7 +63,7 @@ public class SecurityConfiguration {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http, final JwtTokenFilter jwtFilter) throws Exception {
         http
                 .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -70,7 +71,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.STATELESS); })
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
