@@ -2,6 +2,8 @@ package com.lrbell.llamabot.repository;
 
 import com.lrbell.llamabot.model.ChatSession;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +14,8 @@ import java.time.Instant;
 
 @Repository
 public interface ChatSessionRepository extends JpaRepository<ChatSession, String> {
+
+    Page<ChatSession> findByUserIdOrderByUpdatedAtDesc(String userId, Pageable pageable);
 
     @Modifying
     @Transactional

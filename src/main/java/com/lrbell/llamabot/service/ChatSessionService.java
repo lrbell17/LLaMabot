@@ -6,6 +6,8 @@ import com.lrbell.llamabot.repository.ChatSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -42,6 +44,18 @@ public class ChatSessionService {
     public ChatSession startChatSession(final String userId) {
         final ChatSession chatSession = new ChatSession(userId);
         return chatSessionRepository.save(chatSession);
+    }
+
+    /**
+     * Get paginated chat sessions for a user.
+     *
+     * @param userId
+     * @param page
+     * @param size
+     * @return A page of chat sessions.
+     */
+    public Page<ChatSession> getSessions(final String userId, final int page, final int size) {
+        return chatSessionRepository.findByUserIdOrderByUpdatedAtDesc(userId, PageRequest.of(page, size));
     }
 
     /**

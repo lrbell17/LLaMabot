@@ -1,5 +1,6 @@
 type Query {
   chat(message: String!): String
+  getChatSessions(userId: String!, page: Int = 0, size: Int = 10): ChatSessionPage!
 }
 
 type Mutation {
@@ -11,4 +12,13 @@ type ChatSession {
   sessionId: ID!
   userId: String!
   startedAt: String
+  updatedAt: String
+}
+
+type ChatSessionPage {
+  sessions: [ChatSession!]!
+  page: Int!
+  size: Int!
+  totalPages: Int!
+  totalElements: Int!
 }
