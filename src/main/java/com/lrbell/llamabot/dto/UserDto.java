@@ -25,6 +25,7 @@ public class UserDto {
     ) {}
 
     public record LoginResponse(
+            String userId,
             String token,
             String tokenType
     ) {}

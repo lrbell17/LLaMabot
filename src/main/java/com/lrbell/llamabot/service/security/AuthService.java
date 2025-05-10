@@ -1,11 +1,14 @@
 package com.lrbell.llamabot.service.security;
 
 import com.lrbell.llamabot.dto.UserDto;
+import com.lrbell.llamabot.model.User;
+import com.lrbell.llamabot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,18 +18,24 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
+
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final UserRepository userRepository;
 
     /**
      * Constructor.
      *
      * @param authenticationManager
      * @param jwtTokenProvider
+     * @param userRepository
      */
     @Autowired
-    public AuthService(final AuthenticationManager authenticationManager, final JwtTokenProvider jwtTokenProvider) {
+    public AuthService(final AuthenticationManager authenticationManager, final JwtTokenProvider jwtTokenProvider,
+                       final UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -39,8 +48,10 @@ public class AuthService {
         final Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        final String token = jwtTokenProvider.createToken(request.username());
-        return new UserDto.LoginResponse(token, JwtTokenProvider.TOKEN_TYPE);
+        final CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();
+        final String userId = principal.getId();
+
+        final String token = jwtTokenProvider.createToken(userId);
+        return new UserDto.LoginResponse(userId, token, JwtTokenProvider.TOKEN_TYPE);
     }
 }

@@ -36,7 +36,7 @@ public class ChatSessionController {
      * @return the session.
      */
     @MutationMapping
-    @PreAuthorize("#userId == authentication.name")
+    @PreAuthorize("#userId == principal.id")
     public ChatSession startChatSession(@Argument final String userId) {
         return chatSessionService.startChatSession(userId);
     }
@@ -50,7 +50,7 @@ public class ChatSessionController {
      * @return A page of sessions.
      */
     @QueryMapping
-    @PreAuthorize("#userId == authentication.name")
+    @PreAuthorize("#userId == principal.id")
     public ChatSessionDto.SessionPageResponse getChatSessions(@Argument final String userId,
                                           @Argument final int page, @Argument final int size) {
         final Page<ChatSession> result = chatSessionService.getSessions(userId, page, size);

@@ -28,7 +28,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     /**
      * Service for getting user details.
      */
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
      * @param jwtTokenProvider
      * @param userDetailsService
      */
-    public JwtTokenFilter(final JwtTokenProvider jwtTokenProvider, final UserDetailsServiceImpl userDetailsService) {
+    public JwtTokenFilter(final JwtTokenProvider jwtTokenProvider, final CustomUserDetailsService userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
     }
@@ -54,8 +54,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             // Validate JWT and store user info in security context
             if (jwtTokenProvider.validateToken(token)) {
-                final String username = jwtTokenProvider.getUsernameFromToken(token);
-                final var userDetails = userDetailsService.loadUserByUsername(username);
+                final String userId = jwtTokenProvider.getUserIdFromToken(token);
+                final var userDetails = userDetailsService.loadUserById(userId);
                 final var auth = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );

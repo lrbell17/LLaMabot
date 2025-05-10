@@ -65,7 +65,7 @@ public class JwtTokenProvider {
      * @param token
      * @return The username.
      */
-    public String getUsernameFromToken(final String token) {
+    public String getUserIdFromToken(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()

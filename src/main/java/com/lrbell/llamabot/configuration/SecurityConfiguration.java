@@ -1,11 +1,12 @@
 package com.lrbell.llamabot.configuration;
 
+import com.lrbell.llamabot.service.security.CustomUserDetailsService;
 import com.lrbell.llamabot.service.security.JwtTokenFilter;
-import com.lrbell.llamabot.service.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
+
+    /**
+     * Custom user details service.
+     */
+    private final CustomUserDetailsService userDetailsService;
+
+    /**
+     * JWT token filer
+     */
+    private final JwtTokenFilter jwtFilter;
+
+    /**
+     * Constructor.
+     *
+     * @param jwtFilter
+     * @param uds
+     */
+    public SecurityConfiguration(final JwtTokenFilter jwtFilter, final CustomUserDetailsService uds) {
+        this.userDetailsService = uds;
+        this.jwtFilter = jwtFilter;
+    }
+
 
     /**
      * Password encoder.
@@ -37,9 +60,9 @@ public class SecurityConfiguration {
      * @return The auth provider bean.
      */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(final UserDetailsServiceImpl userService) {
+    public DaoAuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider authProvider =  new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -47,7 +70,7 @@ public class SecurityConfiguration {
     /**
      * The authentication manager.
      *
-     * @param config
+     * @param http
      * @return The authentication manager bean.
      * @throws Exception
      */
@@ -64,7 +87,7 @@ public class SecurityConfiguration {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(final HttpSecurity http, final JwtTokenFilter jwtFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http
                 .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(auth -> auth
