@@ -1,6 +1,6 @@
 package com.lrbell.llamabot.service.security;
 
-import com.lrbell.llamabot.model.User;
+import com.lrbell.llamabot.persistence.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

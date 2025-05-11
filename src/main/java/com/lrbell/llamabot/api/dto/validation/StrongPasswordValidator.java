@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.dto.validation;
+package com.lrbell.llamabot.api.dto.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

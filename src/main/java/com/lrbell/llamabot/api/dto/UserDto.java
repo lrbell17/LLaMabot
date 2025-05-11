@@ -1,6 +1,6 @@
-package com.lrbell.llamabot.dto;
+package com.lrbell.llamabot.api.dto;
 
-import com.lrbell.llamabot.dto.validation.StrongPassword;
+import com.lrbell.llamabot.api.dto.validation.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

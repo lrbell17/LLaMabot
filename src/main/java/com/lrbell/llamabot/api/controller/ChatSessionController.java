@@ -1,7 +1,7 @@
-package com.lrbell.llamabot.controller;
+package com.lrbell.llamabot.api.controller;
 
-import com.lrbell.llamabot.dto.ChatSessionDto;
-import com.lrbell.llamabot.model.ChatSession;
+import com.lrbell.llamabot.api.dto.ChatSessionDto;
+import com.lrbell.llamabot.persistence.model.ChatSession;
 import com.lrbell.llamabot.service.ChatSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

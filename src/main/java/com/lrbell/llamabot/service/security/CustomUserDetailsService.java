@@ -1,7 +1,7 @@
 package com.lrbell.llamabot.service.security;
 
-import com.lrbell.llamabot.model.User;
-import com.lrbell.llamabot.repository.UserRepository;
+import com.lrbell.llamabot.persistence.model.User;
+import com.lrbell.llamabot.persistence.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

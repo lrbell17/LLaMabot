@@ -1,14 +1,11 @@
 package com.lrbell.llamabot.service.security;
 
-import com.lrbell.llamabot.dto.UserDto;
-import com.lrbell.llamabot.model.User;
-import com.lrbell.llamabot.repository.UserRepository;
+import com.lrbell.llamabot.api.dto.UserDto;
+import com.lrbell.llamabot.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**

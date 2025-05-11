@@ -1,6 +1,6 @@
-package com.lrbell.llamabot.dto;
+package com.lrbell.llamabot.api.dto;
 
-import com.lrbell.llamabot.model.ChatSession;
+import com.lrbell.llamabot.persistence.model.ChatSession;
 import java.util.List;
 
 public class ChatSessionDto {

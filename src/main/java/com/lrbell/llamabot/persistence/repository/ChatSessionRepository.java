@@ -1,6 +1,6 @@
-package com.lrbell.llamabot.repository;
+package com.lrbell.llamabot.persistence.repository;
 
-import com.lrbell.llamabot.model.ChatSession;
+import com.lrbell.llamabot.persistence.model.ChatSession;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

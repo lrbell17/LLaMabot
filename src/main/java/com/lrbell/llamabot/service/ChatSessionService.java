@@ -1,8 +1,8 @@
 package com.lrbell.llamabot.service;
 
-import com.lrbell.llamabot.errors.exception.ChatSessionNotFoundException;
-import com.lrbell.llamabot.model.ChatSession;
-import com.lrbell.llamabot.repository.ChatSessionRepository;
+import com.lrbell.llamabot.api.errors.exception.ChatSessionNotFoundException;
+import com.lrbell.llamabot.persistence.model.ChatSession;
+import com.lrbell.llamabot.persistence.repository.ChatSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

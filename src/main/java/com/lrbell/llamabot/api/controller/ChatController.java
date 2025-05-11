@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.controller;
+package com.lrbell.llamabot.api.controller;
 
 import com.lrbell.llamabot.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.errors;
+package com.lrbell.llamabot.api.errors;
 
 
 import org.springframework.http.HttpStatus;

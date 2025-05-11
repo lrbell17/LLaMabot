@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.model;
+package com.lrbell.llamabot.persistence.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
