@@ -13,7 +13,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
      * Regex pattern checking if length is between 8-32 chars, and for a upper, lower, numeric and special char
      */
     private static final String PATTERN =
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,32}$";
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{8,32}$";
 
     @Override
     public void initialize(final StrongPassword constraintAnnotation) {
