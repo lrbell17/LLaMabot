@@ -41,8 +41,14 @@ public class ChatSessionService {
      * @param userId
      * @return the session.
      */
-    public ChatSession startChatSession(final String userId) {
-        final ChatSession chatSession = new ChatSession(userId);
+    public ChatSession startChatSession(final String userId, final String message) {
+        final String desc;
+        if (message.length() > 32) {
+            desc = message.substring(0, 31) + "...";
+        } else {
+            desc = message;
+        }
+        final ChatSession chatSession = new ChatSession(userId, desc);
         return chatSessionRepository.save(chatSession);
     }
 

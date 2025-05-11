@@ -37,8 +37,8 @@ public class ChatSessionController {
      */
     @MutationMapping
     @PreAuthorize("#userId == principal.id")
-    public ChatSession startChatSession(@Argument final String userId) {
-        return chatSessionService.startChatSession(userId);
+    public ChatSession startChatSession(@Argument final String userId, @Argument final String message) {
+        return chatSessionService.startChatSession(userId, message);
     }
 
     /**

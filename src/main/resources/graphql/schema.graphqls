@@ -4,13 +4,14 @@ type Query {
 }
 
 type Mutation {
-  startChatSession(userId: String!): ChatSession!
+  startChatSession(userId: String!, message: String!): ChatSession!
   updateChatSessionTimestamp(sessionId: String!): Boolean!
 }
 
 type ChatSession {
   sessionId: ID!
   userId: String!
+  description: String!
   startedAt: String
   updatedAt: String
 }

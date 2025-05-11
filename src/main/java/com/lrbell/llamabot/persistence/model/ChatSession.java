@@ -26,6 +26,12 @@ public class ChatSession {
     private String userId;
 
     /**
+     * The description of the chat session, indicating what the conversation is about.
+     */
+    @Column(nullable = false)
+    private String description;
+
+    /**
      * The session start time.
      */
     @Column(nullable = false)
@@ -49,12 +55,13 @@ public class ChatSession {
      *
      * @param userId
      */
-    public ChatSession(final String userId) {
+    public ChatSession(final String userId, final String description) {
         final Instant startTime = Instant.now();
         this.sessionId = UUID.randomUUID().toString();
         this.startedAt = startTime;
         this.updatedAt = startTime;
         this.userId = userId;
+        this.description = description;
     }
 
 }

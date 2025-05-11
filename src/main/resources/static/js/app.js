@@ -73,8 +73,8 @@ document.getElementById('login-form').onsubmit = async e => {
 // Add new session handler
 document.getElementById('new-session-form').onsubmit = async e => {
     const newSessionMutation = `
-      mutation($userId: String!) {
-        startChatSession(userId: $userId) {
+      mutation($userId: String!, $message: String!) {
+        startChatSession(userId: $userId, message: $message) {
           sessionId
           userId
           startedAt
@@ -83,12 +83,12 @@ document.getElementById('new-session-form').onsubmit = async e => {
       }
     `;
   e.preventDefault();
-  const desc = e.target.description.value;
+  const msg = e.target.message.value;
   try {
     const res = await fetch(`${apiBase}/graphql`, {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${jwtToken}` },
-      body: JSON.stringify({ query: newSessionMutation, variables: { userId, description: desc } })
+      body: JSON.stringify({ query: newSessionMutation, variables: { userId, message: msg } })
     });
     const payload = await res.json();
     if (payload.errors) {
@@ -106,7 +106,7 @@ async function loadSessions() {
   const query = `
       query($userId: String!, $page: Int!, $size: Int!) {
         getChatSessions(userId: $userId, page: $page, size: $size) {
-          sessions { sessionId userId startedAt updatedAt }
+          sessions { sessionId description userId startedAt updatedAt }
           page size totalPages totalElements
         }
       }
@@ -131,7 +131,7 @@ async function loadSessions() {
   list.innerHTML = '';
   for (const s of payload.data.getChatSessions.sessions) {
     const li = document.createElement('li');
-    li.textContent = `${s.sessionId} (started ${new Date(s.startedAt).toLocaleString()}, updated ${new Date(s.updatedAt).toLocaleString()})`;
+    li.textContent = `${s.description}`;
     list.appendChild(li);
   }
 }
