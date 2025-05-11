@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  max-width: 600px;
+  margin: auto;
+  padding: 1em;
+}
+section {
+  margin-bottom: 2em;
+}
+form > * {
+  display: block;
+  margin: 0.5em 0;
+}
+.hidden {
+  display: none;
+}
+#sessions li {
+  margin-bottom: 0.5em;
+}
+.error {
+  color: red;
+}

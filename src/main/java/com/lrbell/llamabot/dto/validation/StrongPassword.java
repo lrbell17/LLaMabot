@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StrongPassword {
-    String message() default "Password must be 8-12 chars, including upper, lower, numeric, and special";
+    String message() default "Password must be 8-32 chars, including upper, lower, numeric, and special";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

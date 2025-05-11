@@ -2,6 +2,7 @@ package com.lrbell.llamabot.configuration;
 
 import com.lrbell.llamabot.service.security.CustomUserDetailsService;
 import com.lrbell.llamabot.service.security.JwtTokenFilter;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,8 +92,11 @@ public class SecurityConfiguration {
         http
                 .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/", "/index.html").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/graphql").authenticated()
+                        .anyRequest().denyAll()
                 )
                 .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.STATELESS); })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
