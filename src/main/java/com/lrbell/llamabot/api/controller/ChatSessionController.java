@@ -63,5 +63,4 @@ public class ChatSessionController {
                 result.getTotalElements()
         );
     }
-
 }

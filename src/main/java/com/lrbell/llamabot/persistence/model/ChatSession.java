@@ -47,7 +47,7 @@ public class ChatSession {
     /**
      * No arg constructor as required by JPA.
      */
-    public ChatSession() {
+    protected ChatSession() {
     }
 
     /**

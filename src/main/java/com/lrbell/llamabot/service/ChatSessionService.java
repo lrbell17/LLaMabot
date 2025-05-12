@@ -1,6 +1,5 @@
 package com.lrbell.llamabot.service;
 
-import com.lrbell.llamabot.api.errors.exception.ChatSessionNotFoundException;
 import com.lrbell.llamabot.persistence.model.ChatSession;
 import com.lrbell.llamabot.persistence.repository.ChatSessionRepository;
 import org.slf4j.Logger;
@@ -9,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChatSessionService {
@@ -21,6 +19,11 @@ public class ChatSessionService {
     private static final Logger logger = LoggerFactory.getLogger(ChatSessionService.class);
 
     /**
+     * The service for managing chat messages.
+     */
+    private final MessageService messageService;
+
+    /**
      * The JPA repository for persistence.
      */
     private final ChatSessionRepository chatSessionRepository;
@@ -28,10 +31,12 @@ public class ChatSessionService {
     /**
      * Constructor.
      *
+     * @param messageService
      * @param repo
      */
     @Autowired
-    public ChatSessionService(final ChatSessionRepository repo) {
+    public ChatSessionService(final MessageService messageService, final ChatSessionRepository repo) {
+        this.messageService = messageService;
         this.chatSessionRepository = repo;
     }
 
@@ -41,15 +46,17 @@ public class ChatSessionService {
      * @param userId
      * @return the session.
      */
+    @Transactional
     public ChatSession startChatSession(final String userId, final String message) {
-        final String desc;
-        if (message.length() > 32) {
-            desc = message.substring(0, 31) + "...";
-        } else {
-            desc = message;
-        }
-        final ChatSession chatSession = new ChatSession(userId, desc);
-        return chatSessionRepository.save(chatSession);
+
+        // create session
+        final ChatSession chatSession = chatSessionRepository.save(
+                new ChatSession(userId, getDescriptionFromMessage(message, 32)));
+
+        // send initial message
+        messageService.sendMessage(chatSession.getSessionId(), message);
+
+        return chatSession;
     }
 
     /**
@@ -65,18 +72,16 @@ public class ChatSessionService {
     }
 
     /**
-     * Set the updatedAt for a session to the current time.
+     * Get the session's description from the initial message, trimming if necessary.
      *
-     * @param sessionId
+     * @param message
+     * @param maxLength
+     * @return The description.
      */
-    public void updateChatSessionTimestamp(final String sessionId) {
-        final int rowsUpdated = chatSessionRepository.updateUpdatedAtById(sessionId, Instant.now());
-        if (rowsUpdated == 0) {
-            final ChatSessionNotFoundException ex = new ChatSessionNotFoundException(
-                    String.format("Chat session with ID %s not found", sessionId)
-            );
-            logger.warn(String.valueOf(ex));
-            throw ex;
+    private String getDescriptionFromMessage(final String message, final int maxLength) {
+        if (message.length() > maxLength) {
+            return message.substring(0, maxLength - 1) + "...";
         }
+        return message;
     }
 }
