@@ -6,7 +6,13 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Table(name = "users")
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_username", columnList = "username"),
+                @Index(name = "idx_email", columnList = "email")
+        }
+)
 public class User {
 
     /**

@@ -3,6 +3,8 @@ package com.lrbell.llamabot.persistence.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Table(indexes = {@Index(name = "idx_userid_updatedat", columnList = "user_id, updated_at DESC")})
 public class ChatSession {
 
     /**
