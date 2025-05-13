@@ -15,9 +15,7 @@ public class UserDto {
              @NotBlank(message = "password is required")
              @StrongPassword String password) {}
 
-    public record RegisterResponse(String id, String username, String email) {
-
-    }
+    public record RegisterResponse(String id, String username, String email) {}
 
     public record LoginRequest(
             @NotBlank(message = "username is required") String username,

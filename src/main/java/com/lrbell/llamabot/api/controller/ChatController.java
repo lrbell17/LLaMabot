@@ -5,7 +5,9 @@ import com.lrbell.llamabot.persistence.model.ChatMessage;
 import com.lrbell.llamabot.service.MessageService;
 import com.lrbell.llamabot.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -37,12 +39,25 @@ public class ChatController {
      * @param message
      * @return The response from the {@link ModelService}
      */
+    @MutationMapping
+    @PreAuthorize("#userId == principal.id")
+    public ChatMessage chat(@Argument final String sessionId, @Argument final String userId,
+                                        @Argument final String message) {
+        return messageService.sendMessage(sessionId, message);
+    }
+
     @QueryMapping
     @PreAuthorize("#userId == principal.id")
-    public ChatDto.MessageResponse chat(@Argument final String sessionId, @Argument final String userId,
-                                        @Argument final String message) {
-        final ChatMessage response = messageService.sendMessage(sessionId, message);
+    public ChatDto.ChatHistoryPageResponse chatHistory(@Argument final String sessionId, @Argument final String userId,
+                                                       @Argument final int page, @Argument final int size) {
+        final Page<ChatMessage> result = messageService.getChatHistory(sessionId, page, size);
 
-        return new ChatDto.MessageResponse(response.getTimestamp(), response.getContent());
+        return new ChatDto.ChatHistoryPageResponse(
+                result.getContent(),
+                result.getNumber(),
+                result.getSize(),
+                result.getTotalPages(),
+                result.getTotalElements()
+        );
     }
 }

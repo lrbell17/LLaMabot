@@ -1,15 +1,26 @@
 type Query {
-  chat(sessionId: String!, userId: String!, message: String!): ChatMessage!
   getChatSessions(userId: String!, page: Int = 0, size: Int = 10): ChatSessionPage!
+  chatHistory(sessionId: String!, userId: String!, page: Int = 0, size: Int = 10): ChatHistoryPage!
 }
 
 type Mutation {
   startChatSession(userId: String!, message: String!): ChatSession!
+  chat(sessionId: String!, userId: String!, message: String!): ChatMessage!
 }
 
 type ChatMessage {
+  messageId: ID
   timestamp: String!
   content: String!
+  sender: String
+}
+
+type ChatHistoryPage {
+  messages: [ChatMessage!]!
+  page: Int!
+  size: Int!
+  totalPages: Int!
+  totalElements: Int!
 }
 
 type ChatSession {

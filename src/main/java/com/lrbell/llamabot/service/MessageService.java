@@ -3,10 +3,13 @@ package com.lrbell.llamabot.service;
 import com.lrbell.llamabot.api.errors.exception.ChatSessionNotFoundException;
 import com.lrbell.llamabot.persistence.model.ChatMessage;
 import com.lrbell.llamabot.persistence.model.ChatSession;
-import com.lrbell.llamabot.persistence.model.Sender;
+import com.lrbell.llamabot.persistence.model.enums.Sender;
 import com.lrbell.llamabot.persistence.repository.ChatMessageRepository;
 import com.lrbell.llamabot.persistence.repository.ChatSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,5 +79,19 @@ public class MessageService {
         chatSessionRepository.updateUpdatedAtById(sessionId, updateAtTs);
 
         return response;
+    }
+
+    /**
+     * Get paginated chat history for a session.
+     *
+     * @param sessionId
+     * @param page
+     * @param size
+     * @return A page of messages.
+     */
+    public Page<ChatMessage> getChatHistory(final String sessionId, final int page, final int size) {
+        final ChatSession session = chatSessionRepository.findById(sessionId).orElseThrow(() ->
+                new ChatSessionNotFoundException(String.format("Chat session with ID %s not found", sessionId)));
+        return messageRepository.findBySessionOrderByTimestampDesc(session, PageRequest.of(page, size));
     }
 }

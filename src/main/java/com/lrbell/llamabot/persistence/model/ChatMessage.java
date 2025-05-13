@@ -1,5 +1,6 @@
 package com.lrbell.llamabot.persistence.model;
 
+import com.lrbell.llamabot.persistence.model.enums.Sender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
