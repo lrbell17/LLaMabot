@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.service.security;
+package com.lrbell.llamabot.service.security.jwt;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

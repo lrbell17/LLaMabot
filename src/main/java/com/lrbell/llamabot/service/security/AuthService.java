@@ -2,6 +2,7 @@ package com.lrbell.llamabot.service.security;
 
 import com.lrbell.llamabot.api.dto.UserDto;
 import com.lrbell.llamabot.persistence.repository.UserRepository;
+import com.lrbell.llamabot.service.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

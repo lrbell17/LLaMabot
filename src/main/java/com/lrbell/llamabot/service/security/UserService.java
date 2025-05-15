@@ -1,7 +1,8 @@
-package com.lrbell.llamabot.service;
+package com.lrbell.llamabot.service.security;
 
 import com.lrbell.llamabot.api.dto.UserDto;
 import com.lrbell.llamabot.persistence.model.User;
+import com.lrbell.llamabot.persistence.model.enums.AuthProvider;
 import com.lrbell.llamabot.persistence.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class UserService {
 
         // Encode password and save
         final String encodedPassword = passwordEncoder.encode(request.password());
-        final User user = new User(request.username(), request.email(), encodedPassword);
+        final User user = new User(request.username(), request.email(), encodedPassword, AuthProvider.LOCAL);
         return userRepository.save(user);
     }
 }

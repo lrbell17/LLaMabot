@@ -1,5 +1,6 @@
-package com.lrbell.llamabot.service.security;
+package com.lrbell.llamabot.service.security.jwt;
 
+import com.lrbell.llamabot.service.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

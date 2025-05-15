@@ -1,7 +1,8 @@
 package com.lrbell.llamabot.configuration;
 
+import com.lrbell.llamabot.service.security.CustomOidcUserService;
 import com.lrbell.llamabot.service.security.CustomUserDetailsService;
-import com.lrbell.llamabot.service.security.JwtTokenFilter;
+import com.lrbell.llamabot.service.security.jwt.JwtTokenFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,16 +34,23 @@ public class SecurityConfiguration {
     private final JwtTokenFilter jwtFilter;
 
     /**
+     * Custom OAuth user service.
+     */
+    private final CustomOidcUserService oidcUserService;
+
+    /**
      * Constructor.
      *
      * @param jwtFilter
-     * @param uds
+     * @param userDetailsService
+     * @param oidcUserService
      */
-    public SecurityConfiguration(final JwtTokenFilter jwtFilter, final CustomUserDetailsService uds) {
-        this.userDetailsService = uds;
+    public SecurityConfiguration(final JwtTokenFilter jwtFilter, final CustomUserDetailsService userDetailsService,
+                                 final CustomOidcUserService oidcUserService) {
+        this.userDetailsService = userDetailsService;
         this.jwtFilter = jwtFilter;
+        this.oidcUserService = oidcUserService;
     }
-
 
     /**
      * Password encoder.
@@ -70,7 +78,7 @@ public class SecurityConfiguration {
     /**
      * The authentication manager.
      *
-     * @param http
+     * @param config
      * @return The authentication manager bean.
      * @throws Exception
      */
@@ -97,7 +105,13 @@ public class SecurityConfiguration {
                         .requestMatchers("/graphql").authenticated()
                         .anyRequest().denyAll()
                 )
-                .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.STATELESS); })
+                .authenticationProvider(authenticationProvider())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint(u -> u.oidcUserService(oidcUserService))
+                )
+                .formLogin(form -> form.loginPage("/login").permitAll())
+                .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -2,7 +2,7 @@ package com.lrbell.llamabot.api.controller;
 
 import com.lrbell.llamabot.api.dto.UserDto;
 import com.lrbell.llamabot.persistence.model.User;
-import com.lrbell.llamabot.service.UserService;
+import com.lrbell.llamabot.service.security.UserService;
 import com.lrbell.llamabot.service.security.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package com.lrbell.llamabot.persistence.model;
 
+import com.lrbell.llamabot.persistence.model.enums.AuthProvider;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,9 +39,13 @@ public class User {
     /**
      * The password.
      */
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Setter
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AuthProvider authProvider;
 
     /**
      * Default constructor required by Spring JPA.
@@ -55,9 +60,13 @@ public class User {
      * @param email
      * @param password
      */
-    public User(final String userName, final String email, final String password) {
+    public User(final String userName, final String email, final String password, final AuthProvider authProvider) {
+        if (authProvider == AuthProvider.LOCAL && (password == null | password.isEmpty())) {
+            throw new IllegalArgumentException("Local users must have a password");
+        }
         this.username = userName;
         this.email = email;
         this.password = password;
+        this.authProvider = authProvider;
     }
 }
