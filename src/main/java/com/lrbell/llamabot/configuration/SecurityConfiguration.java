@@ -1,8 +1,9 @@
 package com.lrbell.llamabot.configuration;
 
-import com.lrbell.llamabot.service.security.CustomOidcUserService;
+import com.lrbell.llamabot.service.security.oauth.CustomOidcUserService;
 import com.lrbell.llamabot.service.security.CustomUserDetailsService;
 import com.lrbell.llamabot.service.security.jwt.JwtTokenFilter;
+import com.lrbell.llamabot.service.security.oauth.OAuthLoginSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -95,7 +96,8 @@ public class SecurityConfiguration {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http,
+                                                   final OAuthLoginSuccessHandler successHandler) throws Exception {
         http
                 .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -109,6 +111,7 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .userInfoEndpoint(u -> u.oidcUserService(oidcUserService))
+                        .successHandler(successHandler)
                 )
                 .formLogin(form -> form.loginPage("/login").permitAll())
                 .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); })

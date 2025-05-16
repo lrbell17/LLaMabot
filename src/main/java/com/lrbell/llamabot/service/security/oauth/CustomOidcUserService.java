@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.service.security;
+package com.lrbell.llamabot.service.security.oauth;
 
 import com.lrbell.llamabot.persistence.model.User;
 import com.lrbell.llamabot.persistence.model.enums.AuthProvider;
@@ -46,7 +46,7 @@ public class CustomOidcUserService extends OidcUserService {
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         final OidcUser oidcUser = super.loadUser(userRequest);
 
-        final String email = oidcUser.getAttribute("email");
+        final String email = oidcUser.getEmail();
         if (email == null) {
             throw new OAuth2AuthenticationException(new OAuth2Error("invalid_user_info"),
                     "Email not found from provider");
