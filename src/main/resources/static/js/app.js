@@ -61,6 +61,31 @@ document.getElementById('login-form').onsubmit = async e => {
   }
 };
 
+// Handle OAuth login button
+document.getElementById('oauth-login').onclick = () => {
+  window.location.href = '/oauth2/authorization/keycloak';
+};
+
+// Set user info from oauth callback
+async function handleOAuthCallback() {
+  if (window.location.hash.startsWith('#token=')) {
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    jwtToken = hashParams.get('token');
+    userId = hashParams.get('userId');
+
+    hide(registerSection, loginSection);
+    show(sessionsSection);
+    loadSessions(0);
+
+    // Clean the URL
+    window.history.replaceState({}, document.title, '/');
+  }
+}
+
+
+// Call on load
+handleOAuthCallback();
+
 // New session handler
 document.getElementById('new-session-form').onsubmit = async e => {
   e.preventDefault();
