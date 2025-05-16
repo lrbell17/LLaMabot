@@ -101,19 +101,20 @@ public class SecurityConfiguration {
         http
                 .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // allow static & root resources
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/index.html").permitAll()
+                        // allow REST auth endpoints
                         .requestMatchers("/api/auth/**").permitAll()
+                        // require auth for other endpoints
                         .requestMatchers("/graphql").authenticated()
                         .anyRequest().denyAll()
                 )
                 .authenticationProvider(authenticationProvider())
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
                         .userInfoEndpoint(u -> u.oidcUserService(oidcUserService))
                         .successHandler(successHandler)
                 )
-                .formLogin(form -> form.loginPage("/login").permitAll())
                 .sessionManagement(s -> { s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

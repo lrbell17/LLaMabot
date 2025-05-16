@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -41,15 +42,20 @@ public class OAuthLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
+                                        final Authentication authentication) throws IOException, ServletException {
         final OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
         final String email = oidcUser.getEmail();
         final User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException(String.format("User %s not found after OAuth login", email)));
 
-        final String token = jwtTokenProvider.createToken(user.getUserId());
+        final String userId = user.getUserId();
+        final String token = jwtTokenProvider.createToken(userId);
 
-        response.setHeader("Authorization", JwtTokenProvider.TOKEN_TYPE + " " + token);
-        response.sendRedirect("/");
+        final String redirectUrl = UriComponentsBuilder.fromUriString("/")
+                .fragment("token=" + token + "&userId=" + userId)
+                .build().toUriString();
+
+        response.sendRedirect(redirectUrl);
     }
 }
