@@ -1,0 +1,31 @@
+{
+  "realm": "myrealm",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "llamabot",
+      "secret": "N2j9dkq2DvfWw052bMKqm5wyhBMp15bJ",
+      "protocol": "openid-connect",
+      "redirectUris": ["http://localhost:8080/login/oauth2/code/keycloak"],
+      "publicClient": false,
+      "directAccessGrantsEnabled": true
+    }
+  ],
+  "users": [
+    {
+      "username": "john.doe",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@mail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "securepass",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}
