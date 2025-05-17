@@ -32,8 +32,26 @@ services:
     depends_on:
       - postgres
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: model
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+    entrypoint: >
+      sh -c "ollama serve & sleep 5 && ollama run llama3.2"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   llamabot:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/llamabot/Dockerfile
     container_name: llamabot
     entrypoint: [ "/bin/bash", "wait-for-keycloak.sh" ]
     environment:
@@ -51,6 +69,8 @@ services:
     depends_on:
       - postgres
       - keycloak
+      - ollama
 
 volumes:
   pgdata:
+  ollama_models:
