@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002
+      author: you
+      changes:
+        - createTable:
+            tableName: chat_session
+            columns:
+              - column:
+                  name: session_id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: started_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_userid_updatedat
+            tableName: chat_session
+            columns:
+              - column:
+                  name: user_id
+              - column:
+                  name: updated_at
