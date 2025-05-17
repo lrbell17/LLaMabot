@@ -12,6 +12,7 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./postgres/init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.2.4
@@ -21,6 +22,7 @@ services:
       KC_HTTP_PORT: 9090
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      KC_DB_SCHEMA: keycloak
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_ADMIN_USER}
