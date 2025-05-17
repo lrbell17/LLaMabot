@@ -3,12 +3,12 @@ spring:
     name: llamabot
   ai:
     ollama:
-      base-url: http://localhost:11434
+      base-url: http://host.docker.internal:11434
       model: llama3.2
   datasource:
-    url: jdbc:postgresql://localhost:5432/chatdb
-    username: postgres
-    password: strongpass
+    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,17 +18,17 @@ spring:
         format_sql: true
   security:
     jwt:
-      secret: dvN3YwX0K1x9oUTFNo5NnAJKcgQQQdmKHqiS0ylYcBU=
+      secret: ${JWT_SECRET}
       expiration-ms: 3600000
     oauth2:
       client:
         registration:
           keycloak:
             client-id: llamabot
-            client-secret: N2j9dkq2DvfWw052bMKqm5wyhBMp15bJ
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
             scope: openid, profile, email
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             provider: keycloak
         provider:
           keycloak:
-            issuer-uri: http://localhost:9090/realms/myrealm
+            issuer-uri: http://keycloak:9090/realms/myrealm

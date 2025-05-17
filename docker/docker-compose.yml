@@ -54,16 +54,12 @@ services:
       dockerfile: docker/llamabot/Dockerfile
     container_name: llamabot
     entrypoint: [ "/bin/bash", "wait-for-keycloak.sh" ]
+    volumes:
+      - ./llamabot/config/application.yml:/app/config/application.yml
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_AI_OLLAMA_BASE_URL: http://host.docker.internal:11434
-      SPRING_AI_OLLAMA_MODEL: llama3.2
-      SPRING_SECURITY_JWT_SECRET: ${JWT_SECRET}
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_ID: llamabot
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:9090/realms/myrealm
+      - SPRING_CONFIG_LOCATION=file:/app/config/application.yml
+    env_file:
+      .env
     ports:
       - "8080:8080"
     depends_on:
