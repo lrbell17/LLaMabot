@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/002-create-chat_session-table.yaml
   - include:
       file: db/changelog/003-create-chat_message-table.yaml
+  - include:
+      file: db/changelog/004-create-default-user.yaml

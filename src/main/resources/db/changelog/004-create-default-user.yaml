@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004
+      author: you
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  value: 1902ca2f-9d79-4dc3-94a0-32f584eaeccc
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: email
+                  value: admin@mail.com
+              - column:
+                  name: password
+                  value: $2a$12$rKtOYC4CDhnNVE/JldJ4AexxhdcZ5EsWVYvTK0MRlhllXiYt0WgW.
+              - column:
+                  name: auth_provider
+                  value: LOCAL

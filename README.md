@@ -25,6 +25,8 @@
 3. To start the entire application (Ollama, Keycloak, Postgres, LLaMabot): `make start`
 
 4. Simple demo UI available at http://localhost:8080
+   - default local user credentials: `admin/admin`
+   - default SSO user credentials: `john.doe/securepass`
 
 See the [Makefile](Makefile) for other targets for managing containers.
 
