@@ -33,7 +33,7 @@ public class User {
     /**
      * The unique email.
      */
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     @Setter
     private String email;
 

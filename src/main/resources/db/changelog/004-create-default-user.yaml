@@ -13,9 +13,6 @@ databaseChangeLog:
                   name: username
                   value: admin
               - column:
-                  name: email
-                  value: admin@mail.com
-              - column:
                   name: password
                   value: $2a$12$rKtOYC4CDhnNVE/JldJ4AexxhdcZ5EsWVYvTK0MRlhllXiYt0WgW.
               - column:

@@ -10,8 +10,7 @@ public class UserDto {
     public record RegisterRequest(
              @Size(min = 8, max = 32, message = "username must be between 8 and 32 chars")
              @NotBlank(message = "username is required") String username,
-             @Email(message = "must be a valid email")
-             @NotBlank(message = "email is required") String email,
+             @Email(message = "must be a valid email") String email,
              @NotBlank(message = "password is required")
              @StrongPassword String password) {}
 
