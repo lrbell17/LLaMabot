@@ -1,7 +1,7 @@
 package com.lrbell.llamabot.configuration;
 
 import com.lrbell.llamabot.service.security.oauth.CustomOidcUserService;
-import com.lrbell.llamabot.service.security.CustomUserDetailsService;
+import com.lrbell.llamabot.service.security.userdetails.CustomUserDetailsService;
 import com.lrbell.llamabot.service.security.jwt.JwtTokenFilter;
 import com.lrbell.llamabot.service.security.oauth.OAuthLoginSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

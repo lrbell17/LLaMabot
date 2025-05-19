@@ -1,4 +1,4 @@
-package com.lrbell.llamabot.service.security;
+package com.lrbell.llamabot.service.security.userdetails;
 
 import com.lrbell.llamabot.persistence.model.User;
 import com.lrbell.llamabot.persistence.repository.UserRepository;
