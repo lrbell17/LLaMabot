@@ -5,12 +5,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,9 +50,24 @@ public class User {
     @Setter
     private String password;
 
+    /**
+     * The auth provider (oidcc or local)
+     */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AuthProvider authProvider;
+
+    /**
+     * The roles associated with the user.
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @Setter
+    private Set<Role> roles;
 
     /**
      * Default constructor required by Spring JPA.
@@ -61,7 +82,8 @@ public class User {
      * @param email
      * @param password
      */
-    public User(final String userName, final String email, final String password, final AuthProvider authProvider) {
+    public User(final String userName, final String email, final String password,
+                final AuthProvider authProvider, final Set<Role> roles) {
         if (authProvider == AuthProvider.LOCAL && (password == null | password.isEmpty())) {
             throw new IllegalArgumentException("Local users must have a password");
         }
@@ -69,5 +91,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.authProvider = authProvider;
+        this.roles = roles;
     }
 }

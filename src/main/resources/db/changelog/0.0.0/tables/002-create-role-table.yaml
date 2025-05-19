@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.0-create-role-table
+      author: system
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: role_id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+        - createIndex:
+            indexName: idx_role_name
+            tableName: role
+            columns:
+              - column:
+                  name: role_name

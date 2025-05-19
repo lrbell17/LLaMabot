@@ -58,7 +58,8 @@ public class CustomOidcUserService extends OidcUserService {
                     email.substring(0, email.indexOf('@')),
                     email,
                     null,
-                    AuthProvider.OIDC
+                    AuthProvider.OIDC,
+                    Collections.emptySet() // TODO: Add roles to user registration flow
             );
             return userRepository.save(u);
         });

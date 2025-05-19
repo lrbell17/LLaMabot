@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: 003
-      author: you
+      id: 0.0.0-create-chat_message-table
+      author: system
       changes:
         - createTable:
             tableName: chat_message

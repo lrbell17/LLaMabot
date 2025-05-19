@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/0.0.0/tables/001-create-users-table.yaml
+  - include:
+      file: db/changelog/0.0.0/tables/002-create-role-table.yaml
+  - include:
+      file: db/changelog/0.0.0/tables/003-create-user_role-table.yaml
+  - include:
+      file: db/changelog/0.0.0/tables/004-create-chat_session-table.yaml
+  - include:
+      file: db/changelog/0.0.0/tables/005-create-chat_message-table.yaml
+  - include:
+      file: db/changelog/0.0.0/defaults/001-create-default-roles.yaml
+  - include:
+      file: db/changelog/0.0.0/defaults/002-create-default-user.yaml

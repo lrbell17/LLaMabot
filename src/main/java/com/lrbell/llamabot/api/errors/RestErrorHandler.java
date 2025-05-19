@@ -1,6 +1,9 @@
 package com.lrbell.llamabot.api.errors;
 
 
+import com.lrbell.llamabot.api.errors.exception.RoleNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,6 +22,11 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 public class RestErrorHandler {
+
+    /**
+     * Logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(RestErrorHandler.class);
 
     /**
      * Handle {@link IllegalArgumentException} as a bad request.
@@ -68,7 +76,7 @@ public class RestErrorHandler {
      * @param ex
      * @return 404 response with error message.
      */
-    @ExceptionHandler( {NoResourceFoundException.class, NoHandlerFoundException.class })
+    @ExceptionHandler( {NoResourceFoundException.class, NoHandlerFoundException.class, RoleNotFoundException.class })
     public ResponseEntity<Map<String,String>> handleNotFound(final Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -83,6 +91,7 @@ public class RestErrorHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleAll(final Exception ex) {
+        logger.error("Internal error", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "An unexpected error occurred"));

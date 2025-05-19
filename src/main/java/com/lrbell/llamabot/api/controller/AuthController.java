@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Controller for user authentication.
  */
@@ -61,7 +64,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserDto.RegisterResponse> register(@Valid @RequestBody final UserDto.RegisterRequest request) {
         final User user = userService.register(request);
-        final UserDto.RegisterResponse response = new UserDto.RegisterResponse(user.getUserId(), user.getUsername(), user.getEmail());
+
+        final Set<String> roleNames = user.getRoles().stream()
+                .map(role -> role.getRoleName())
+                .collect(Collectors.toSet());
+
+        final UserDto.RegisterResponse response = new UserDto.RegisterResponse(user.getUserId(), user.getUsername(),
+                user.getEmail(), roleNames);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

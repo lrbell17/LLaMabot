@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.0-create-default-user
+      author: system
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column: {name: role_id, value: 42444bdc-962f-4eec-a5b2-e2f56f549bdc}
+              - column: {name: role_name, value: ADMIN}
+        - insert:
+            tableName: role
+            columns:
+              - column: {name: role_id, value: a1b34d8b-addd-4177-aeff-3373377b3595}
+              - column: { name: role_name, value: END_USER}

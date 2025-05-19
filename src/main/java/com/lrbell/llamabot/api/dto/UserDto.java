@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Set;
+
 public class UserDto {
 
     public record RegisterRequest(
@@ -12,9 +14,11 @@ public class UserDto {
              @NotBlank(message = "username is required") String username,
              @Email(message = "must be a valid email") String email,
              @NotBlank(message = "password is required")
-             @StrongPassword String password) {}
+             @StrongPassword String password,
+             Set<String> roles
+             ) {}
 
-    public record RegisterResponse(String id, String username, String email) {}
+    public record RegisterResponse(String id, String username, String email, Set<String> roles) {}
 
     public record LoginRequest(
             @NotBlank(message = "username is required") String username,

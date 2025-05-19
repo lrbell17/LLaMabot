@@ -1,6 +1,7 @@
 package com.lrbell.llamabot.service.security;
 
 import com.lrbell.llamabot.api.dto.UserDto;
+import com.lrbell.llamabot.persistence.model.Role;
 import com.lrbell.llamabot.persistence.model.User;
 import com.lrbell.llamabot.persistence.model.enums.AuthProvider;
 import com.lrbell.llamabot.persistence.repository.UserRepository;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -25,20 +28,28 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
+     * The service for managing roles.
+     */
+    private final RoleService roleService;
+
+    /**
      * Password encoder.
      */
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Constructor/
+     * Constructor
      *
      * @param userRepository
      * @param passwordEncoder
+     * @param roleService
      */
     @Autowired
-    public UserService(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
+    public UserService(final UserRepository userRepository, final PasswordEncoder passwordEncoder,
+                       final RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     /**
@@ -56,9 +67,19 @@ public class UserService {
         userRepository.findByEmail(request.email())
                 .ifPresent(u -> { throw new IllegalArgumentException(String.format("email %s already in use", u.getEmail())); });
 
-        // Encode password and save
+        // Get roles/validate they exist
+        final Set<Role> roles = roleService.getRolesFromNameSet(request.roles());
+
+        // Encode password
         final String encodedPassword = passwordEncoder.encode(request.password());
-        final User user = new User(request.username(), request.email(), encodedPassword, AuthProvider.LOCAL);
+
+        final User user = new User(
+                request.username(),
+                request.email(),
+                encodedPassword,
+                AuthProvider.LOCAL,
+                roles
+        );
         return userRepository.save(user);
     }
 }
