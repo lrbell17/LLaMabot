@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,6 +63,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("/register")
+    @PreAuthorize("@permissionValidator.hasPermission(authentication, 'user:create')")
     public ResponseEntity<UserDto.RegisterResponse> register(@Valid @RequestBody final UserDto.RegisterRequest request) {
         final User user = userService.register(request);
 

@@ -6,6 +6,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,29 +36,24 @@ public class Role {
     /**
      * The permissions associated with the role.
      */
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @Column(nullable = false)
-//    @Setter
-//    private Set<Permission> permissions;
-
-//    /**
-//     * Constructor.
-//     *
-//     * @param roleName
-//     * @param permissions
-//     */
-//    public Role(final String roleName, final Set<Permission> permissions) {
-//        this.roleName = roleName;
-//        this.permissions = permissions;
-//    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    @Setter
+    private Set<Permission> permissions;
 
     /**
      * Constructor.
      *
      * @param roleName
+     * @param permissions
      */
-    public Role(final String roleName) {
+    public Role(final String roleName, final Set<Permission> permissions) {
         this.roleName = roleName;
+        this.permissions = permissions;
     }
 
     /**

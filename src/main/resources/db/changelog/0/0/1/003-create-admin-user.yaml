@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 0.0.0-create-default-user
+      id: 0.0.1-create-admin-user
       author: system
       changes:
         - insert:

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -81,5 +82,15 @@ public class UserService {
                 roles
         );
         return userRepository.save(user);
+    }
+
+    /**
+     * Get user by ID.
+     *
+     * @param userId
+     * @return the user
+     */
+    public Optional<User> getById(final String userId) {
+        return userRepository.findById(userId);
     }
 }

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 0.0.0-create-default-user
+      id: 0.0.1-create-default-roles
       author: system
       changes:
         - insert:
@@ -13,3 +13,8 @@ databaseChangeLog:
             columns:
               - column: {name: role_id, value: a1b34d8b-addd-4177-aeff-3373377b3595}
               - column: { name: role_name, value: END_USER}
+        - insert:
+            tableName: role_permission
+            columns:
+              - column: { name: role_id, value: 42444bdc-962f-4eec-a5b2-e2f56f549bdc }
+              - column: { name: permission_id, value: 7b905bb6-0b0b-4d03-8b77-43eae416de95 }

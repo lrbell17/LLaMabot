@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.0-create-role_permission-table
+      author: system
+      changes:
+        - createTable:
+            tableName: role_permission
+            columns:
+              - column:
+                  name: role_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: permission_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_permission_role_id
+            baseTableName: role_permission
+            baseColumnNames: role_id
+            referencedTableName: role
+            referencedColumnNames: role_id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            constraintName: fk_permission_permission_id
+            baseTableName: role_permission
+            baseColumnNames: permission_id
+            referencedTableName: permission
+            referencedColumnNames: permission_id
+            onDelete: CASCADE

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.1-create-permissions
+      author: system
+      changes:
+        - insert:
+            tableName: permission
+            columns:
+              - column: {name: permission_id, value: 7b905bb6-0b0b-4d03-8b77-43eae416de95}
+              - column: {name: permission_name, value: user:create}

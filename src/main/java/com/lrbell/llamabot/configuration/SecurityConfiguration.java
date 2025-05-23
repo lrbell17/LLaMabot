@@ -104,9 +104,10 @@ public class SecurityConfiguration {
                         // allow static & root resources
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/index.html").permitAll()
-                        // allow REST auth endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // allow all access too login endpoint
+                        .requestMatchers("/api/auth/login").permitAll()
                         // require auth for other endpoints
+                        .requestMatchers("/api/auth/**").authenticated()
                         .requestMatchers("/graphql").authenticated()
                         .anyRequest().denyAll()
                 )
